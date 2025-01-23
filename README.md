@@ -1,0 +1,2 @@
+# Potato Disease Classification
+Developed an end-to-end classification system with TensorFlow, FastAPI, ReactJS. Trained models on Kaggle, deployed via GCP, &integrated TF Lite on React Native for edge deployment. Attained 99+% confidence in predictions & ensured seamless functionality with Docker-based CI/CD pipelines.
