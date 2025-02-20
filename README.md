@@ -62,27 +62,7 @@ With 99%+ confidence in predictions, the system provides reliable results for fa
 
 ### Backend (FastAPI)
 
-```python
-from fastapi import FastAPI, File, UploadFile
-import tensorflow as tf
-import numpy as np
 
-app = FastAPI()
-model = tf.keras.models.load_model("models/potato_disease_model.h5")
-CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
-
-@app.post("/predict")
-async def predict(file: UploadFile = File(...)):
-    image = read_file_as_image(await file.read())
-    image_batch = np.expand_dims(image, 0)
-    predictions = model.predict(image_batch)
-    predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
-    confidence = np.max(predictions[0])
-    return {
-        "class": predicted_class,
-        "confidence": float(confidence)
-    }
-```
 
 ### Frontend (ReactJS)
 
@@ -106,22 +86,6 @@ async def predict(file: UploadFile = File(...)):
 - **Storage Buckets**: Static asset hosting
 - **CI/CD Pipeline**: Automated testing and deployment
 
-### Docker Configuration
-
-```dockerfile
-# Backend Dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY ./app ./app
-COPY ./models ./models
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
-```
 
 ## 📊 Performance Metrics
 
@@ -140,49 +104,10 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
 - Node.js 14+
 - Docker
 
-### Setup Instructions
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/potato-disease-classification.git
-   cd potato-disease-classification
-   ```
 
-2. **Backend Setup**
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   uvicorn main:app --reload
-   ```
 
-3. **Frontend Setup**
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
 
-4. **Mobile App Setup**
-   ```bash
-   cd mobile-app
-   npm install
-   npx react-native run-android  # or run-ios
-   ```
-
-5. **Docker Deployment**
-   ```bash
-   docker-compose up -d
-   ```
-
-## 🔮 Future Enhancements
-
-- [ ] Add support for additional crop diseases
-- [ ] Implement progressive learning for model improvement
-- [ ] Enhance mobile app with augmented reality visualization
-- [ ] Add multi-language support for global use
-- [ ] Integrate with weather APIs for contextual predictions
 
 ## 👥 Contributors
 
